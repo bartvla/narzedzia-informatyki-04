@@ -1,7 +1,7 @@
 import pytest
 
 from pydantic import ValidationError
-from src.models import Apartment
+from src.models import Apartment, Tenant
 
 
 def test_apartment_fields():
@@ -19,7 +19,7 @@ def test_apartment_fields():
     assert data.name == "Test Apartment"
     assert data.location == "Test Location"
     assert data.area_m2 == 50.0
-    assert len(data.rooms) == 2
+    assert len(data.rooms) == 2, f"Oczekiwano 2 mieszkań, ale znaleziono {len(data.rooms)}"
 
 
 def test_apartment_from_dict():
@@ -43,3 +43,22 @@ def test_apartment_from_dict():
     data['area_m2'] = "25m2" # Invalid field
     with pytest.raises(ValidationError):
         wrong_apartment = Apartment(**data)
+
+def test_tenant_field_ontegrity():
+    data = {
+        "name": "Jan Nowak",
+        "apartment": "apart-polanka",
+        "room": "room-bigger",
+        "rent_pln": 1500.0,
+        "deposit_pln": 3000.0,
+        "date_agreement_from": "2024-01-01",
+        "date_agreement_to": "2024-12-31"
+    }
+    tennant = Tenant(**data)
+    assert tennant.name != None or ""
+    assert tennant.apartment != None or ""
+    assert tennant.room != None or ""
+    assert tennant.rent_pln != None
+    assert tennant.deposit_pln != None
+    assert tennant.date_agreement_from != None or ""
+    assert tennant.date_agreement_to != None or ""
