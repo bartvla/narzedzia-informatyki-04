@@ -29,3 +29,13 @@ def test_all_tenants_from_json_are_in_manager():
     for tenant_key, tenant_data in tenants_json.items():
         assert tenant_key in manager.tenants
         assert tenant_data["name"] in tenant_names
+
+def test_all_tenants_have_field_pointing_to_existing_apartment():
+    parameters = Parameters()
+    manager = Manager(parameters)
+    manager.load_data()
+
+    assert manager.check_tenants_apartment() is True
+
+    manager.tenants["tenant-1"].apartment = "apart-nie-istnieje"
+    assert manager.check_tenants_apartment() is False

@@ -44,7 +44,7 @@ def test_apartment_from_dict():
     with pytest.raises(ValidationError):
         wrong_apartment = Apartment(**data)
 
-def test_tenant_field_ontegrity():
+def test_tenant_field_integrity():
     data = {
         "name": "Jan Nowak",
         "apartment": "apart-polanka",
